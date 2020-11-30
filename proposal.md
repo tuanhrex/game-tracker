@@ -42,6 +42,22 @@ In the space below:
 * Search bar will search the API for the game.
 * Create Account (if not logged in) will take you to create account page. Profile will be visible if you are logged in and will take you take your profile page.
 * Log in (if not logged in) will take you to log in page. If you are logged in, Log out will be visible and logs you out and redirect back to homepage.
+
+![Homepage](images/homepage.png)
+* Homepage will automatically get recently released game from API and list them with some info such as genre, released date, developer.
+* Will be able to add to played list if logged in.
+* Games Played will look similar to this page except it will just list the names and when it was added. It will also have button to remove games.
+* Game title will be linked to details page for the corresponding game.
+
+![CreateAccount](images/create.png)
+* Create Account page will have required field to fill to create account.
+* Profile page will look similar to this layout with played games link.
+
+![Details](images/details.png)
+* Details page will show an image of the game, list various details such as title, genre, developer, release date, etc.
+* It will show comments or reviews regarding the corresponding game.
+* User will also be able to add comments.
+
 ----------------------------------------------------------
 
 Make a PR when you're done!
