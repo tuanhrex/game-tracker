@@ -71,6 +71,18 @@ app.get('/profile', isLoggedIn, (req, res) => {
 app.use('/auth', require('./routes/auth'));
 app.use('/games', require('./routes/games'));
 
+app.get('/results', (req, res) => {
+  console.log(req.query);
+  axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${req.query.game}`)
+  .then(response => {
+    let results = response.data.results
+    // console.log(response.data.results[0]);
+    res.render('results', { results })
+
+  })
+})
+
+
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
