@@ -2,7 +2,23 @@
 <div>
     <h3>Title: <%= game.name %></h3>
     
-    <p>Developer: <%= game.developers[0].name %></p>
+    
+    <p>Developer:
+
+        <% game.developers.forEach(function(result) { %>
+           
+               <%= result.name %>
+           
+          <% }); %>
+    </p>
+    <p>Publisher:
+
+        <% game.publishers.forEach(function(result) { %>
+           
+               <%= result.name %>
+           
+          <% }); %>
+    </p>
     <p>Genre:
 
         <% game.genres.forEach(function(result) { %>
