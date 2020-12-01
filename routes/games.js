@@ -12,10 +12,10 @@ router.get('/played', isLoggedIn, (req, res) => {
 
 router.get('/results', (req, res) => {
     console.log(req.query);
-    axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${req.query.game}`)
+    axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${req.query.game}&page=1&page_size=25`)
     .then(response => {
       let results = response.data.results
-      // console.log(response.data.results[0]);
+      console.log(response.data);
       res.render('games/results', { results })
   
     })

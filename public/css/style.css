@@ -7,3 +7,8 @@ nav ul li {
 h1 {
   color: chartreuse;
 }
+
+.details {
+  max-width: 500px;
+  max-height: 500px;
+}
