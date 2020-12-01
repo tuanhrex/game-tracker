@@ -10,7 +10,16 @@ router.get('/played', isLoggedIn, (req, res) => {
     res.render('games/played')
 })
 
-
+router.get('/results', (req, res) => {
+    console.log(req.query);
+    axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${req.query.game}`)
+    .then(response => {
+      let results = response.data.results
+      // console.log(response.data.results[0]);
+      res.render('games/results', { results })
+  
+    })
+  })
 
 router.get('/:id', (req, res) => {
     console.log(req.params.id);
