@@ -1,8 +1,28 @@
 <img src="<%= game.background_image %>" alt="<%= game.name %>" srcset="">
 <div>
     <h3>Title: <%= game.name %></h3>
-    <p>Genre: <%= game.genres[0].name %></p>
+    
     <p>Developer: <%= game.developers[0].name %></p>
-    <p>Publisher: <%= game.publishers[0].name %></p>
+    <p>Genre:
+
+        <% game.genres.forEach(function(result) { %>
+           
+               <%= result.name %>
+           
+          <% }); %>
+    </p>
+
+    <p>Platform:
+
+        <% game.platforms.forEach(function(result) { %>
+           
+               <%= result.platform.name %>
+           
+          <% }); %>
+    </p>
+    
+    
     <p>Released: <%= game.released %> </p>
+
+    <p>Description: <%= game.description %></p>
 </div>
