@@ -11,7 +11,7 @@ router.get('/:id', (req, res) => {
     axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
     .then(response => {
       console.log(response.data);  
-      res.render('games/details' , { games: response.data})
+      res.render('games/details' , { game: response.data})
     })
   
   
