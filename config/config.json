@@ -2,21 +2,21 @@
   "development": {
     "username": "postgres",
     "password": "Litotwin#1",
-    "database": "express_auth_development",
+    "database": "game_tracker_development",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "Litotwin#1",
-    "database": "express_authe_test",
+    "database": "game_tracker_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
     "password": "Litotwin#1",
-    "database": "express_auth_production",
+    "database": "game_tracker_production",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }

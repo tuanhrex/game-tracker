@@ -4,10 +4,11 @@ const layouts = require('express-ejs-layouts');
 const session = require('express-session');
 const passport = require('./config/ppConfig');
 const flash = require('connect-flash');
+const axios = require('axios');
 const SECRET_SESSION = process.env.SECRET_SESSION;
 console.log(SECRET_SESSION)
 const app = express();
-
+const moment = require('moment')
 // isLoggedIn middleware
 
 const isLoggedIn = require('./middleware/isLoggedIn');
@@ -30,7 +31,8 @@ const sessionObject = {
   saveUninitialized: true
 }
 
-
+let today = moment().format('YYYY-MM-DD')
+let oneWeekAgo = moment().subtract(3,'d').format('YYYY-MM-DD')
 
 app.use(session(sessionObject));
 
@@ -52,12 +54,17 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
+  axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&dates=${oneWeekAgo},${today}`)
+  .then(response => {
+    console.log(response.data.results);
+  })
   console.log(res.locals.alerts);
   res.render('index', { alerts: res.locals.alerts });
 });
 
 app.get('/profile', isLoggedIn, (req, res) => {
-  res.render('profile');
+  const user = req.user
+  res.render('profile', { user });
 });
 
 app.use('/auth', require('./routes/auth'));
@@ -67,5 +74,6 @@ const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
   console.log(`🎧 You're listening to the smooth sounds of port ${PORT} 🎧`);
 });
+
 
 module.exports = server;
