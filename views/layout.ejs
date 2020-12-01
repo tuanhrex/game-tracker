@@ -10,6 +10,13 @@
     <%- include('partials/alerts') %>
     <header>
       <nav>
+        <a href="/">Game Tracker</a>
+        <a href="/games/played">Games Played</a>
+        <form method="GET" action="/results">
+          <input type="text" name="game" id="game">
+          <input type="submit" value="Search">
+      
+      </form>
         <ul>
           <% if (!currentUser) { %>
             <li><a href="/auth/signup">Signup</a></li>
@@ -23,11 +30,7 @@
       </nav>
     </header>
     <h1>Game Tracker</h1>
-    <form method="GET" action="/results">
-      <input type="text" name="game" id="game">
-      <input type="submit" value="Search">
-  
-  </form>
+    
     <%- body %>
     <footer>
       
