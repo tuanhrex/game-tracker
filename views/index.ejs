@@ -1,1 +1,9 @@
 <h2>Homepage</h2>
+
+<% results.forEach(function(result) { %>
+    <div class="well">
+      <h3><a href="/games/<%= result.id %>"><%= result.name %></a></h3>
+      <p> <%= result.released %></p>
+      
+    </div>
+  <% }); %>

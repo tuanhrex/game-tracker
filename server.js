@@ -56,10 +56,11 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&dates=${oneWeekAgo},${today}`)
   .then(response => {
-    console.log(response.data.results);
+    // console.log(response.data.results);
+    let results = response.data.results
+    console.log(res.locals.alerts);
+    res.render('index', { alerts: res.locals.alerts, results });
   })
-  console.log(res.locals.alerts);
-  res.render('index', { alerts: res.locals.alerts });
 });
 
 app.get('/profile', isLoggedIn, (req, res) => {
@@ -68,6 +69,7 @@ app.get('/profile', isLoggedIn, (req, res) => {
 });
 
 app.use('/auth', require('./routes/auth'));
+app.use('/games', require('./routes/games'));
 
 
 const PORT = process.env.PORT || 3000;
