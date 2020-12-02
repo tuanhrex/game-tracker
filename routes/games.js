@@ -4,7 +4,10 @@ const passport = require('../config/ppConfig');
 const db = require('../models');
 const router = express.Router();
 const axios = require('axios');
+const methodOverride = require('method-override')
 const isLoggedIn = require('../middleware/isLoggedIn');
+
+router.use(methodOverride('_method'))
 
 router.get('/played', isLoggedIn, (req, res) => {
   db.user.findOne({
