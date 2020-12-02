@@ -4,6 +4,10 @@
     <div class="well">
       <h3><a href="/games/<%= game.rawg %>"><%= game.title %></a></h3>
       <p> <%= game.createdAt %></p>
+      <form  action="/games/?_method=DELETE" method="POST">
+        <input type="hidden" id="gameId" name="gameId" value="<%= game.id %>">
+        <input type="submit" value="Delete">
+      </form>
       
     </div>
   <% }); %>

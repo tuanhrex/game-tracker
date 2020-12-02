@@ -27,7 +27,7 @@ router.get('/played', isLoggedIn, (req, res) => {
       let playedGames = allGames.filter((cat) => {
         return user.games.map((c) => c.id).includes(cat.id)
       })
-      console.log(playedGames);
+      // console.log(playedGames);
       res.render('games/played', {games: playedGames})
 
     }))
@@ -57,6 +57,18 @@ router.post('/played', isLoggedIn, (req, res) => {
   
 })
 
+router.delete('/', isLoggedIn, function (req, res) {
+  console.log(req.body);
+  db.playedGame.destroy({
+      where: {
+          userId: req.user.id,
+          gameId: req.body.gameId
+      }
+  })
+  .then((_project) => {
+      res.redirect('played')
+  })
+})
 
 router.get('/results', (req, res) => {
     // console.log(req.query);
@@ -73,7 +85,7 @@ router.get('/:id', (req, res) => {
     console.log(req.params.id);
     axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
     .then(response => {
-      console.log(response.data);  
+      // console.log(response.data);  
       res.render('games/details' , { game: response.data })
     })
   

@@ -45,11 +45,11 @@
 
     <form method="POST" action="/games/played">
     
-        <label for="played">Add To Played</label>
+        
         <input type="hidden" id="gameTitle" name="gameTitle" value="<%= game.name %>">
         <input type="hidden" id="gameRawgId" name="gameRawgId" value="<%= game.id %>">
         
-        <input type="submit">
+        <input type="submit" value="Add to Played">
     </form>
 
 </div>
