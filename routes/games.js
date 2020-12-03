@@ -89,21 +89,37 @@ router.get('/:id', (req, res) => {
     axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
     .then(response => {
       
-      db.game.findOne({
-        where: {
-          rawg: req.params.id
-        }
-      }).then((game) => {
-        db.comment.findAll({
-          where: {
-            gameId: game.id
-          }, include: db.user
-        }).then((comments) => {
+      // db.game.findOne({
+      //   where: {
+      //     rawg: req.params.id
+      //   }
+      // }).then((game) => {
+      //   if (!game) throw Error
+      //   db.comment.findAll({
+      //     where: {
+      //       gameId: game.id
+      //     }, include: db.user
+      //   }).then((comments) => {
 
 
-          res.render('games/details' , { game: response.data, comments: comments })
-      })
-      })
+      //     res.render('games/details' , { game: response.data , comments: comments})
+      // }).catch((error) =>{
+      //   console.log(error);
+        res.render('games/details', { game: response.data})
+      // // })
+
+      // })
+      // db.game.findOne({
+      //   where: { id: req.params.id },
+      //   include:  db.comment
+        
+      // }).then((game) => {
+      //   if (!game) throw Error()
+      //   const comments = game.comments
+      //   res.render('games/details', { game: response.data, comments: comments})
+      // }).catch((error) => {
+      //   res.render('games/details', { game: response.data })
+      // })
       
     })
   

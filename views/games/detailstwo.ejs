@@ -53,8 +53,15 @@
     </form>
 
 </div>
-
-
+<% comments.forEach(function(comment) { %>
+    <div class="well">
+      <p>
+        <%= comment.content %>
+      </br>
+        <strong>- <%= comment.name %></strong> 
+      </p>
+    </div>
+  <% }) %>
 
 
 <form action="/games/:id/comments" method="POST">
