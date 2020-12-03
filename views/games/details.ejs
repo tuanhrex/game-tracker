@@ -48,6 +48,7 @@
         
         <input type="hidden" id="gameTitle" name="gameTitle" value="<%= game.name %>">
         <input type="hidden" id="gameRawgId" name="gameRawgId" value="<%= game.id %>">
+        <input type="hidden" id="gameImage" name="gameImage" value="<%= game.background_image %>">
         
         <input type="submit" value="Add to Played">
     </form>
@@ -65,7 +66,8 @@
       <label for="content">Comment</label></br>
       <textarea type="text" class="form-control" id="content" name="content" required></textarea>
     </div>
-    <input type="hidden" name="rawg" id="rawg" value="<%= game.id %>">
-    <input type="hidden" name="title" id="title" value="<%= game.name %>">
+    <input type="hidden" id="gameTitle" name="gameTitle" value="<%= game.name %>">
+    <input type="hidden" id="gameRawgId" name="gameRawgId" value="<%= game.id %>">
+    <input type="hidden" id="gameImage" name="gameImage" value="<%= game.background_image %>">
     <input type="submit" class="btn btn-primary">
   </form>

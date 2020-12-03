@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   game.init({
     title: DataTypes.STRING,
-    rawg: DataTypes.INTEGER
+    rawg: DataTypes.INTEGER,
+    imageUrl: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'game',

@@ -47,7 +47,8 @@ router.post('/played', isLoggedIn, (req, res) => {
         rawg: req.body.gameRawgId
       },
       defaults: {
-        title: req.body.gameTitle
+        title: req.body.gameTitle,
+        imageUrl: req.body.gameImage
       }
     }).then((gameReport) => {
       const game = gameReport[0]
@@ -106,9 +107,12 @@ router.get('/:id', (req, res) => {
       // }).catch((error) =>{
       //   console.log(error);
         res.render('games/details', { game: response.data})
-      // // })
+      // })
 
       // })
+
+// saasdas
+
       // db.game.findOne({
       //   where: { id: req.params.id },
       //   include:  db.comment
@@ -123,24 +127,61 @@ router.get('/:id', (req, res) => {
       
     })
   
-  
-  
 })
+
+// router.get('/:id',  (req, res) => {
+//   axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
+//   .then(response => {
+
+
+//     db.game.findOne({
+//       where: { rawg: req.params.id },
+//       include: db.comment
+  
+      
+//     }).then((game) => {
+      
+//       if (!game) throw Error()
+//       db.comment.findAll().then((allComments => {
+//         let gameComments = allComments.filter((cat) => {
+//           return game.comments.map((c) => c.id).includes(cat.id)
+//         })
+//         // console.log(playedGames);
+//         res.render('games/played', {comments: gameComments})
+  
+//       }))
+      
+//     })
+//   })
+// })
+
 
 router.post('/:id/comments', isLoggedIn, (req,res) => {
   console.log(req.body)
-  db.game.findOne({
+  db.game.findOrCreate({
     where: {
-      rawg: req.body.rawg
+      rawg: req.body.gameRawgId
+    }, 
+    defaults: {
+      title: req.body.gameTitle,
+      imageUrl: req.body.gameImage
     }
   }).then((game) => {
-    db.comment.create({
-      gameId: game.id,
-      userId: req.user.id,
-      comment: req.body.content
+    // Repetitive but it was the only way I was able to make it save gameId after creating a new game
+    db.game.findOne({
+      where: {
+        rawg: req.body.gameRawgId
+      }
+    }).then((found) => {
+      db.comment.create({
+        gameId: found.id,
+        userId: req.user.id,
+        comment: req.body.content
+      })
     })
+    
   })
-  res.redirect(`/games/${req.body.id}`)
+  res.redirect(`/games/${req.body.gameRawgId}`)
 })
 
 
