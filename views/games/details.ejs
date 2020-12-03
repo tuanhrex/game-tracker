@@ -53,3 +53,24 @@
     </form>
 
 </div>
+
+<% comments.forEach(function(comment) { %>
+    <div class="well">
+      <p><%= comment.comment %></p>
+      <p> <%= comment.name %></p>
+      
+    </div>
+  <% }); %>
+
+<form action="/games/:id/comments" method="POST">
+   
+    
+    
+    <div class="form-group">
+      <label for="content">Comment</label></br>
+      <textarea type="text" class="form-control" id="content" name="content" required></textarea>
+    </div>
+    <input type="hidden" name="rawg" id="rawg" value="<%= game.id %>">
+    <input type="hidden" name="title" id="title" value="<%= game.name %>">
+    <input type="submit" class="btn btn-primary">
+  </form>

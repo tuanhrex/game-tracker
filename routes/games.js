@@ -88,14 +88,44 @@ router.get('/:id', (req, res) => {
     console.log(req.params.id);
     axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
     .then(response => {
-      // console.log(response.data);  
-      res.render('games/details' , { game: response.data })
+      
+      db.game.findOne({
+        where: {
+          rawg: req.params.id
+        }
+      }).then((game) => {
+        db.comment.findAll({
+          where: {
+            gameId: game.id
+          }, include: db.user
+        }).then((comments) => {
+
+
+          res.render('games/details' , { game: response.data, comments: comments })
+      })
+      })
+      
     })
   
   
   
 })
 
+router.post('/:id/comments', isLoggedIn, (req,res) => {
+  console.log(req.body)
+  db.game.findOne({
+    where: {
+      rawg: req.body.rawg
+    }
+  }).then((game) => {
+    db.comment.create({
+      gameId: game.id,
+      userId: req.user.id,
+      comment: req.body.content
+    })
+  })
+  res.redirect(`/games/${req.body.id}`)
+})
 
 
 module.exports = router;
