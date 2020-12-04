@@ -61,9 +61,22 @@
       <p>
         <%= comment.comment %>
       </br>
-        <strong>- <%= comment.user.name %></strong> 
+        <strong>- <%= comment.user.name %>, <%= comment.userId %></strong> 
         
       </p>
+      <% if (comment.userId === currentUser.id) { %>
+        <form method="GET" action="/games/:id/comments/<%= comment.id %>">
+          
+          <input type="submit" value="Edit">
+        </form>
+        <form method="POST" action="/games/:id/comments/<%= comment.id %>/?_method=DELETE">
+          
+          <input type="submit" value="Delete">
+        </form>
+
+      <% } else {%>
+        
+      <% } %>
     </div>
   <% }) %>
 
