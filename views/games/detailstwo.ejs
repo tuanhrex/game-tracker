@@ -52,16 +52,26 @@
         <input type="submit" value="Add to Played">
     </form>
 
-</div>
-<% comments.forEach(function(comment) { %>
-    <div class="well">
-      <p>
-        <%= comment.content %>
-      </br>
-        <strong>- <%= comment.name %></strong> 
-      </p>
+    <% if (!comments) { %>
+      <p> No Comments yet!
+
+    <% } else {%>
     </div>
-  <% }) %>
+    <% comments.forEach(function(comment) { %>
+        <div class="well">
+          <p>
+            <%= comment.content %>
+          </br>
+            <strong>- <%= comment.name %></strong> 
+          </p>
+        </div>
+      <% }) %>
+      
+    <% } %>
+
+
+
+
 
 
 <form action="/games/:id/comments" method="POST">

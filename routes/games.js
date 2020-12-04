@@ -16,21 +16,13 @@ router.get('/played', isLoggedIn, (req, res) => {
 
     
   }).then((user) => {
-    // console.log(user);
-    // db.game.findAll({
-    //   where: {userId: user.id}
-    // })
-    // .then((allGames => {
-    //   console.log(allGames);
-    //   res.render('games/played')
-    // }))
-
+  
     if (!user) throw Error()
     db.game.findAll().then((allGames => {
       let playedGames = allGames.filter((cat) => {
         return user.games.map((c) => c.id).includes(cat.id)
       })
-      // console.log(playedGames);
+     
       res.render('games/played', {games: playedGames})
 
     }))
@@ -85,31 +77,31 @@ router.get('/results', (req, res) => {
     })
   })
 
-router.get('/:id', (req, res) => {
-    console.log(req.params.id);
-    axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
-    .then(response => {
+// router.get('/:id', (req, res) => {
+//     console.log(req.params.id);
+//     axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
+//     .then(response => {
       
-      // db.game.findOne({
-      //   where: {
-      //     rawg: req.params.id
-      //   }
-      // }).then((game) => {
-      //   if (!game) throw Error
-      //   db.comment.findAll({
-      //     where: {
-      //       gameId: game.id
-      //     }, include: db.user
-      //   }).then((comments) => {
+//       db.game.findOne({
+//         where: {
+//           rawg: req.params.id
+//         }
+//       }).then((game) => {
+//         if (!game) throw Error
+//         db.comment.findAll({
+//           where: {
+//             gameId: game.id
+//           }, include: db.user
+//         }).then((comments) => {
 
 
-      //     res.render('games/details' , { game: response.data , comments: comments})
-      // }).catch((error) =>{
-      //   console.log(error);
-        res.render('games/details', { game: response.data})
-      // })
+//           res.render('games/details' , { game: response.data , comments: comments})
+//       }).catch((error) =>{
+//         console.log(error);
+//         res.render('games/details', { game: response.data})
+//       })
 
-      // })
+//       })
 
 // saasdas
 
@@ -125,9 +117,9 @@ router.get('/:id', (req, res) => {
       //   res.render('games/details', { game: response.data })
       // })
       
-    })
+//     })
   
-})
+// })
 
 // router.get('/:id',  (req, res) => {
 //   axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
@@ -153,6 +145,63 @@ router.get('/:id', (req, res) => {
       
 //     })
 //   })
+// })
+router.get('/:id', (req, res) => {
+  axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
+  .then(response => {
+    db.game.findOne({
+      where: { rawg: req.params.id }
+    }).then((game) => {
+      
+      if (!game) {
+        
+        let comments = []
+        res.render('games/details', { game: response.data, comments: comments})
+      }
+      else {
+      
+      
+        db.comment.findAll({
+          where: { gameId: game.id},
+          include: [db.game, db.user]
+        }).then((comments) => {
+          console.log(comments[0].user.id);
+          
+          
+          res.render('games/details', { game: response.data, comments: comments})
+
+        })
+      }
+      
+    })
+  })
+})
+
+
+// router.get('/:id', (req, res) => {
+//   axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
+//   .then(response => {
+//     db.game.findOne({
+//       where: {
+//         rawg: req.params.id
+//       }.then((game) => {
+//         if (game = !game) {
+//           let comments = []
+//           res.render('games/details', {game: response.data, comments: comments})
+//         }
+//         else (game = game) 
+//           db.comment.findAll({
+//             where: {
+//               gameId: game.id
+//             }, include: [db.game, db.user]
+//           }).then((comments) => {
+//             res.render('games/details', {game: response.data, comments:comments})
+//           })
+        
+//       })
+//     })
+//   })
+  
 // })
 
 
