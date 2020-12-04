@@ -165,7 +165,7 @@ router.get('/:id', (req, res) => {
           where: { gameId: game.id},
           include: [db.game, db.user]
         }).then((comments) => {
-          console.log(comments[0].user.id);
+          // console.log(comments[0].user.id);
           
           
           res.render('games/details', { game: response.data, comments: comments})
