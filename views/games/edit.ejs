@@ -1,0 +1,13 @@
+<%= comment.comment %>
+
+<form action="/games/comments/<%= comment.id %>/?_method=PUT" method="POST">
+   
+    
+    
+    <div class="form-group">
+      <label for="content">Comment</label></br>
+      <textarea type="text" class="form-control" id="content" name="content" value=""required><%= comment.comment %></textarea>
+    </div>
+  
+    <input type="submit" class="btn btn-primary">
+  </form>

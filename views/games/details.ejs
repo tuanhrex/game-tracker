@@ -64,13 +64,14 @@
         <strong>- <%= comment.user.name %>, <%= comment.userId %></strong> 
         
       </p>
-      <% if (comment.userId === currentUser.id) { %>
-        <form method="GET" action="/games/:id/comments/<%= comment.id %>">
+      <% if (currentUser && comment.userId === currentUser.id) { %>
+        <form method="GET" action="/games/comments/edit/<%= comment.id %>">
           
           <input type="submit" value="Edit">
         </form>
-        <form method="POST" action="/games/:id/comments/<%= comment.id %>/?_method=DELETE">
-          
+        <form method="POST" action="/games/comments/?_method=DELETE">
+          <input type="hidden" id="commentId" name="commentId" value="<%= comment.id %>">
+          <input type="hidden" id="gameId" name="gameId" value="<%= comment.gameId %>">
           <input type="submit" value="Delete">
         </form>
 

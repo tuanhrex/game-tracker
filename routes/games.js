@@ -67,85 +67,76 @@ router.delete('/', isLoggedIn, function (req, res) {
 })
 
 router.get('/results', (req, res) => {
-    // console.log(req.query);
+   
     axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${req.query.game}&page=1&page_size=25`)
     .then(response => {
       let results = response.data.results
-      // console.log(response.data);
+      
       res.render('games/results', { results })
   
     })
   })
 
-// router.get('/:id', (req, res) => {
-//     console.log(req.params.id);
-//     axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
-//     .then(response => {
-      
-//       db.game.findOne({
-//         where: {
-//           rawg: req.params.id
-//         }
-//       }).then((game) => {
-//         if (!game) throw Error
-//         db.comment.findAll({
-//           where: {
-//             gameId: game.id
-//           }, include: db.user
-//         }).then((comments) => {
+router.get('/comments/edit/:id', isLoggedIn, (req, res) => {
+  db.comment.findOne({
+    where: {
+      id: req.params.id
+    }
+  }).then((comment) =>{
+    res.render('games/edit', { comment: comment})
+  })
+})
+
+router.delete('/comments', isLoggedIn, function (req, res) {
+  
+  db.comment.destroy({
+      where: {
+          id: req.body.commentId
+      }
+  })
+  .then((_project) => {
+      db.game.findOne({
+        where: {
+          id: req.body.gameId
+        }
+      }).then((game) => {
+
+        res.redirect(`/games/${game.rawg}`)
+      })
+  })
+})
 
 
-//           res.render('games/details' , { game: response.data , comments: comments})
-//       }).catch((error) =>{
-//         console.log(error);
-//         res.render('games/details', { game: response.data})
-//       })
 
-//       })
 
-// saasdas
-
-      // db.game.findOne({
-      //   where: { id: req.params.id },
-      //   include:  db.comment
+router.put('/comments/:id', (req, res) => {
+  db.comment.update({
+    comment: req.body.content
+  }, {
+    where: {
+      id: req.params.id
+    }
+  }).then(numRowsChanged => {
+    
+    db.comment.findOne({
+      where: { 
+        id: req.params.id
+      }
+    }).then((comment) => {
+      db.game.findOne({
+        where: {
+          id: comment.gameId
+        }
+      }).then((game) => {
         
-      // }).then((game) => {
-      //   if (!game) throw Error()
-      //   const comments = game.comments
-      //   res.render('games/details', { game: response.data, comments: comments})
-      // }).catch((error) => {
-      //   res.render('games/details', { game: response.data })
-      // })
-      
-//     })
-  
-// })
+        res.redirect(`/games/${game.rawg}`)
+      })
+    })
+  })
 
-// router.get('/:id',  (req, res) => {
-//   axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
-//   .then(response => {
+})
 
 
-//     db.game.findOne({
-//       where: { rawg: req.params.id },
-//       include: db.comment
-  
-      
-//     }).then((game) => {
-      
-//       if (!game) throw Error()
-//       db.comment.findAll().then((allComments => {
-//         let gameComments = allComments.filter((cat) => {
-//           return game.comments.map((c) => c.id).includes(cat.id)
-//         })
-//         // console.log(playedGames);
-//         res.render('games/played', {comments: gameComments})
-  
-//       }))
-      
-//     })
-//   })
-// })
 router.get('/:id', (req, res) => {
   axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
   .then(response => {
@@ -154,7 +145,7 @@ router.get('/:id', (req, res) => {
     }).then((game) => {
       
       if (!game) {
-        
+        // had to set an empty array for comments because the details ejs uses comments
         let comments = []
         res.render('games/details', { game: response.data, comments: comments})
       }
@@ -165,7 +156,7 @@ router.get('/:id', (req, res) => {
           where: { gameId: game.id},
           include: [db.game, db.user]
         }).then((comments) => {
-          // console.log(comments[0].user.id);
+        
           
           
           res.render('games/details', { game: response.data, comments: comments})
@@ -177,32 +168,6 @@ router.get('/:id', (req, res) => {
   })
 })
 
-
-// router.get('/:id', (req, res) => {
-//   axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
-//   .then(response => {
-//     db.game.findOne({
-//       where: {
-//         rawg: req.params.id
-//       }.then((game) => {
-//         if (game = !game) {
-//           let comments = []
-//           res.render('games/details', {game: response.data, comments: comments})
-//         }
-//         else (game = game) 
-//           db.comment.findAll({
-//             where: {
-//               gameId: game.id
-//             }, include: [db.game, db.user]
-//           }).then((comments) => {
-//             res.render('games/details', {game: response.data, comments:comments})
-//           })
-        
-//       })
-//     })
-//   })
-  
-// })
 
 
 router.post('/:id/comments', isLoggedIn, (req,res) => {
