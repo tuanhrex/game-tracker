@@ -6,6 +6,10 @@ nav ul li {
   font-family: 'Press Start 2P', monospace;
   
 }
+h1 {
+  font-family: 'Press Start 2P', monospace;
+  align-content: center;
+}
 h3 {
   font-family: 'Press Start 2P', monospace;
   align-content: center;
@@ -71,7 +75,7 @@ footer {
     font-size: 8px;
   }
   .margin {
-    margin: 150px 55px 125px 55px;
+    margin: 200px 55px 125px 55px;
     font-size: 25px;
   }
   .details {
@@ -81,6 +85,16 @@ footer {
   }
   
   .details img{ 
+    margin-top: 50px;
+    
+    width: 500px;
+    height: 300px;
+  }
+  .error {
+    margin: 200px 55px 125px 55px;
+    font-size: 25px;
+  }
+  .error img{ 
     margin-top: 50px;
     
     width: 500px;

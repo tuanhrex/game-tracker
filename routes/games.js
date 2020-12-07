@@ -25,7 +25,10 @@ router.get('/played', isLoggedIn, (req, res) => {
      
       res.render('games/played', {games: playedGames})
 
-    }))
+    })).catch(err => {
+      console.log(err);
+      res.status(400).render('main/404')
+  })
     
   })
 })
@@ -47,7 +50,10 @@ router.post('/played', isLoggedIn, (req, res) => {
       game.addUser(user).then(() => {
         res.redirect('played')
 
-      })
+      }).catch(err => {
+        console.log(err);
+        res.status(400).render('main/404')
+    })
     })
   })
   
@@ -63,7 +69,10 @@ router.delete('/', isLoggedIn, function (req, res) {
   })
   .then((_project) => {
       res.redirect('played')
-  })
+  }).catch(err => {
+    console.log(err);
+    res.status(400).render('main/404')
+})
 })
 
 router.get('/results', (req, res) => {
@@ -74,7 +83,10 @@ router.get('/results', (req, res) => {
       
       res.render('games/results', { results })
   
-    })
+    }).catch(err => {
+      console.log(err);
+      res.status(400).render('main/404')
+  })
   })
 
 router.get('/comments/edit/:id', isLoggedIn, (req, res) => {
@@ -84,7 +96,10 @@ router.get('/comments/edit/:id', isLoggedIn, (req, res) => {
     }
   }).then((comment) =>{
     res.render('games/edit', { comment: comment})
-  })
+  }).catch(err => {
+    console.log(err);
+    res.status(400).render('main/404')
+})
 })
 
 router.delete('/comments', isLoggedIn, function (req, res) {
@@ -102,7 +117,10 @@ router.delete('/comments', isLoggedIn, function (req, res) {
       }).then((game) => {
 
         res.redirect(`/games/${game.rawg}`)
-      })
+      }).catch(err => {
+        console.log(err);
+        res.status(400).render('main/404')
+    })
   })
 })
 
@@ -130,7 +148,10 @@ router.put('/comments/:id', (req, res) => {
       }).then((game) => {
         
         res.redirect(`/games/${game.rawg}`)
-      })
+      }).catch(err => {
+        console.log(err);
+        res.status(400).render('main/404')
+    })
     })
   })
 
@@ -161,7 +182,10 @@ router.get('/:id', (req, res) => {
           
           res.render('games/details', { game: response.data, comments: comments})
 
-        })
+        }).catch(err => {
+          console.log(err);
+          res.status(400).render('main/404')
+      })
       }
       
     })
@@ -193,6 +217,9 @@ router.post('/:id/comments', isLoggedIn, (req,res) => {
         comment: req.body.content
       })
       res.redirect(`/games/${req.body.gameRawgId}`)
+    }).catch(err => {
+      console.log(err);
+      res.status(400).render('main/404')
     })
     
   })

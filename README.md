@@ -1,10 +1,9 @@
-# Express Authentication
-
-Express authentication template using Passport + flash messages + custom middleware
+# Game Tracker App
+Game app that tracks games you have played by searching RAWG.io API. It uses an express authentication template using Passport + flash messages + custom middleware. It uses Moment to get current date and date from seven days before to pull recent releases from API.
 
 ## What it includes
 
-* Sequelize user model / migration
+* Sequelize user, game, comment, and playedGame model / migration
 * Settings for PostgreSQL
 * Passport and passport-local for authentication
 * Sessions to keep user logged in between pages
@@ -23,6 +22,41 @@ Express authentication template using Passport + flash messages + custom middlew
 | createdAt | Date | Auto-generated |
 | updatedAt | Date | Auto-generated |
 
+### Game Model
+
+| Column Name | Data Type | Notes |
+| --------------- | ------------- | ------------------------------ |
+| id | Integer | Serial Primary Key, Auto-generated |
+| title | String | Must be provided |
+| rawg | Integer | Must be unique to create new entry |
+| imageUrl | String | Must be provided |
+| createdAt | Date | Auto-generated |
+| updatedAt | Date | Auto-generated |
+
+### playedGame Model
+
+| Column Name | Data Type | Notes |
+| --------------- | ------------- | ------------------------------ |
+| id | Integer | Serial Primary Key, Auto-generated |
+| userId | Integer | Must be provided |
+| gameId | Integer | Must be provided |
+| createdAt | Date | Auto-generated |
+| updatedAt | Date | Auto-generated |
+
+### Comment Model
+
+| Column Name | Data Type | Notes |
+| --------------- | ------------- | ------------------------------ |
+| id | Integer | Serial Primary Key, Auto-generated |
+| gameId | Integer | Must be provided |
+| userId | Integer | Must be provided |
+| comment | String | Must be provided |
+| createdAt | Date | Auto-generated |
+| updatedAt | Date | Auto-generated |
+
+### ERD
+![ERD](images/erdfinal.png)
+
 ### Default Routes
 
 | Method | Path | Location | Purpose |
@@ -35,20 +69,30 @@ Express authentication template using Passport + flash messages + custom middlew
 | GET | /auth/logout | auth.js | Removes session info |
 | GET | /profile | server.js | Regular User Profile |
 
+### Game Routes
+
+| Method | Path | Location | Purpose |
+| ------ | ---------------- | -------------- | ------------------- |
+| GET | /games/results | games.js | Returns search results |
+| GET | /games/played | games.js | Display games played |
+| GET | /games/:id | games.js | Displays game details |
+| POST | /games/played | games.js| Adds game to played |
+| DELETE | /games | games.js | Deletes game from played |
+| POST | /games/:id/comments | games.js | Adds comment to game |
+| GET | /games/comments/edit/:id | games.js | Edit form for comment |
+| PUT | /games/comments/:id | games.js | Edits comment |
+| DELETE | /games/comments | games.js | Deletes comment |
+
 ## Steps To Use
 
-#### 1. Create a new repo on Github and use your 'express-authentication' as the template
+#### 1. Go to repo on Github
 
-When we are finished with this boilerplate, we are going to make it a template on Github that will allow us to create a new repo on Github with all this code already loaded in.
-* Go to `github.com` and create a new repository. In the template dropdown, choose this template.
-* Clone your new repo to your local machine
-* Get Codin'!
+Repo is found here: [game-tracker](https://github.com/tuanhrex/game-tracker). Alternatively, you can go to this website: [game-tracker-app](https://tuanh-game-tracker.herokuapp.com/)
+* Go to the repo above
+* `fork` and `clone` the repo
 
-#### 2. Delete any .keep files
 
-The `.keep` files are there to maintain the file structure of the auth. If there is a folder that has nothing in it, git won't add it. The dev work around is to add a file to it that has nothing in it, just forces git to keep the folder so we can use it later.
-
-#### 3. Install node modules from the package.json
+#### 2. Install node modules from the package.json
 
 ```
 npm install
@@ -56,15 +100,13 @@ npm install
 
 (Or just `npm i` for short)
 
-#### 4. Customize with new project name
 
-Remove defaulty type stuff. Some areas to consider are:
+#### 3. Update `config.json`
 
-* Title in `layout.ejs`
-* Description/Repo Link in `package.json`
-* Remove boilerplate's README content and replace with new project's readme
+* Change the database name to whatever you like or keep it the same
+* Other settings are likely okay, but check username, password, and dialect
 
-#### 5. Create a new database for the new project
+#### 4. Create a new database for the new project
 
 Using the sequelize command line interface, you can create a new database from the terminal.
 
@@ -72,29 +114,20 @@ Using the sequelize command line interface, you can create a new database from t
 createdb <new_db_name>
 ```
 
-#### 6. Update `config.json`
 
-* Change the database name
-* Other settings are likely okay, but check username, password, and dialect
-
-#### 7. Check the models and migrations for relevance to your project's needs
-
-For example, if your project requires a birthdate field, then don't add that in there. 
-
-> When changing your models, update both the model and the migration.
-
-#### 8. Run the migrations
+#### 5. Run the migrations
 
 ```
 sequelize db:migrate
 ```
 
-#### 9. Add a `.env` file with the following fields:
+#### 6. Add a `.env` file with the following fields:
 
 * SESSION_SECRET: Can be any random string; usually a hash in production
 * PORT: Usually 3000 or 8000
+* API_KEY: Can easily obtain one from [rawg.io](https://rawg.io/apidocs)
 
-#### 10. Run server; make sure it works
+#### 7. Run server; make sure it works
 
 ```
 nodemon
