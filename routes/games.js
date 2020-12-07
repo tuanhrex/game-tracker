@@ -13,23 +13,17 @@ router.get('/played', isLoggedIn, (req, res) => {
   db.user.findOne({
     where: { id: req.user.id },
     include: db.game
-
-    
   }).then((user) => {
-  
     if (!user) throw Error()
     db.game.findAll().then((allGames => {
       let playedGames = allGames.filter((cat) => {
         return user.games.map((c) => c.id).includes(cat.id)
       })
-     
       res.render('games/played', {games: playedGames})
-
     })).catch(err => {
       console.log(err);
       res.status(400).render('main/404')
-  })
-    
+  })  
   })
 })
 
@@ -76,13 +70,10 @@ router.delete('/', isLoggedIn, function (req, res) {
 })
 
 router.get('/results', (req, res) => {
-   
     axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${req.query.game}&page=1&page_size=25`)
     .then(response => {
       let results = response.data.results
-      
       res.render('games/results', { results })
-  
     }).catch(err => {
       console.log(err);
       res.status(400).render('main/404')
@@ -115,7 +106,6 @@ router.delete('/comments', isLoggedIn, function (req, res) {
           id: req.body.gameId
         }
       }).then((game) => {
-
         res.redirect(`/games/${game.rawg}`)
       }).catch(err => {
         console.log(err);
@@ -135,7 +125,6 @@ router.put('/comments/:id', (req, res) => {
       id: req.params.id
     }
   }).then(numRowsChanged => {
-    
     db.comment.findOne({
       where: { 
         id: req.params.id
@@ -146,7 +135,6 @@ router.put('/comments/:id', (req, res) => {
           id: comment.gameId
         }
       }).then((game) => {
-        
         res.redirect(`/games/${game.rawg}`)
       }).catch(err => {
         console.log(err);
@@ -154,7 +142,6 @@ router.put('/comments/:id', (req, res) => {
     })
     })
   })
-
 })
 
 
@@ -164,30 +151,22 @@ router.get('/:id', (req, res) => {
     db.game.findOne({
       where: { rawg: req.params.id }
     }).then((game) => {
-      
       if (!game) {
         // had to set an empty array for comments because the details ejs uses comments
         let comments = []
         res.render('games/details', { game: response.data, comments: comments})
       }
       else {
-      
-      
         db.comment.findAll({
           where: { gameId: game.id},
           include: [db.game, db.user]
         }).then((comments) => {
-        
-          
-          
           res.render('games/details', { game: response.data, comments: comments})
-
         }).catch(err => {
           console.log(err);
           res.status(400).render('main/404')
       })
-      }
-      
+      }   
     })
   })
 })
