@@ -83,6 +83,90 @@ Game app that tracks games you have played by searching RAWG.io API. It uses an 
 | PUT | /games/comments/:id | games.js | Edits comment |
 | DELETE | /games/comments | games.js | Deletes comment |
 
+### User Stories
+
+* As a user, you will be able to create an account and log in.
+* As a user, you will able to add games you have played and once added will be redirected to your played list.
+* As a user, will be able to leave comments or reviews for the games you have played.
+
+### Technologies
+
+* NodeJS
+* Javascipt
+* HTML
+* CSS
+
+### Code Snippet
+
+##### GET Route for Game Details Page
+```js
+router.get('/:id', (req, res) => {
+  axios.get(`https://api.rawg.io/api/games/${req.params.id}?key=${process.env.API_KEY}`)
+  .then(response => {
+    db.game.findOne({
+      where: { rawg: req.params.id }
+    }).then((game) => {
+      
+      if (!game) {
+        // had to set an empty array for comments because the details ejs uses comments
+        let comments = []
+        res.render('games/details', { game: response.data, comments: comments})
+      }
+      else {
+      
+      
+        db.comment.findAll({
+          where: { gameId: game.id},
+          include: [db.game, db.user]
+        }).then((comments) => {
+        
+          
+          
+          res.render('games/details', { game: response.data, comments: comments})
+
+        }).catch(err => {
+          console.log(err);
+          res.status(400).render('main/404')
+      })
+      }
+      
+    })
+  })
+})
+```
+##### POST Route to Add Games to Played
+```js
+router.post('/played', isLoggedIn, (req, res) => {
+  db.user.findOne({
+    where: { id: req.user.id }
+  }).then((user) => {
+    db.game.findOrCreate({
+      where: {
+        rawg: req.body.gameRawgId
+      },
+      defaults: {
+        title: req.body.gameTitle,
+        imageUrl: req.body.gameImage
+      }
+    }).then((gameReport) => {
+      const game = gameReport[0]
+      game.addUser(user).then(() => {
+        res.redirect('played')
+
+      }).catch(err => {
+        console.log(err);
+        res.status(400).render('main/404')
+    })
+    })
+  })
+  
+})
+```
+
+
+
+
+
 ## Steps To Use
 
 #### 1. Go to repo on Github
