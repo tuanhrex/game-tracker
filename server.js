@@ -55,10 +55,8 @@ app.use((req, res, next) => {
 
 app.get('/', (req, res) => {
   axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&dates=${oneWeekAgo},${today}`)
-  .then(response => {
-    // console.log(response.data.results);
+  .then(response => {  
     let results = response.data.results
-    console.log(res.locals.alerts);
     res.render('index', { alerts: res.locals.alerts, results });
   })
 });
