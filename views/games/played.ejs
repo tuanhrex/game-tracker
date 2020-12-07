@@ -1,13 +1,23 @@
-<h1>Games Played</h1>
+<h3 class="text-primary">Games Played</h3>
 
-<% games.forEach(function(game) { %>
-    <div class="well">
-      <h3><a href="/games/<%= game.rawg %>"><%= game.title %></a></h3>
-      <p> <%= game.createdAt %></p>
-      <form  action="/games/?_method=DELETE" method="POST">
-        <input type="hidden" id="gameId" name="gameId" value="<%= game.id %>">
-        <input type="submit" value="Delete">
-      </form>
-      
-    </div>
-  <% }); %>
+
+
+  <div class="played">
+    <% games.forEach(function(game) { %>
+        <div class="card">
+          <a href="/games/<%= game.rawg %>">
+            <img src="<%= game.imageUrl %>" class="card-img-top" alt="<%= game.title %>">
+          </a>
+          <div class="card-body">
+    
+            <h5 class="card-title"><a href="/games/<%= game.rawg %>"><%= game.title %></a></h5>
+            <p class="card-text"> Added to Played: </br><%= game.createdAt %></p>
+            <form  action="/games/?_method=DELETE" method="POST">
+              <input type="hidden" id="gameId" name="gameId" value="<%= game.id %>">
+              <input type="submit" class="btn btn-primary" value="Delete">
+            </form>
+          </div>
+          
+        </div>
+      <% }); %>
+      </div>

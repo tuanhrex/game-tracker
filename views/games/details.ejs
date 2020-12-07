@@ -1,9 +1,9 @@
-<img class="details" src="<%= game.background_image %>" alt="<%= game.name %>" srcset="">
-<div>
-    <h3>Title: <%= game.name %></h3>
+<div class="details">
+  <img  src="<%= game.background_image %>" alt="<%= game.name %>" srcset="">
+    <h3 class="text-primary">Title: <%= game.name %></h3>
     
     
-    <p>Developer:
+    <p><strong>Developer:</strong>
 
         <% game.developers.forEach(function(result) { %>
            
@@ -11,7 +11,7 @@
            
           <% }); %>
     </p>
-    <p>Publisher:
+    <p><strong>Publisher:</strong>
 
         <% game.publishers.forEach(function(result) { %>
            
@@ -19,7 +19,7 @@
            
           <% }); %>
     </p>
-    <p>Genre:
+    <p><strong>Genre:</strong>
 
         <% game.genres.forEach(function(result) { %>
            
@@ -28,7 +28,7 @@
           <% }); %>
     </p>
 
-    <p>Platform:
+    <p><strong>Platform:</strong>
 
         <% game.platforms.forEach(function(result) { %>
            
@@ -38,10 +38,10 @@
     </p>
     
     
-    <p>Released: <%= game.released %> </p>
-    <p>Metacritic: <%= game.metacritic %></p>
+    <p><strong>Released: </strong><%= game.released %> </p>
+    <p><strong>Metacritic:</strong> <%= game.metacritic %></p>
 
-    <p>Description: <%= game.description %></p>
+    <p><strong>Description:</strong> <%= game.description %></p>
 
     <form method="POST" action="/games/played">
     
@@ -50,48 +50,59 @@
         <input type="hidden" id="gameRawgId" name="gameRawgId" value="<%= game.id %>">
         <input type="hidden" id="gameImage" name="gameImage" value="<%= game.background_image %>">
         
-        <input type="submit" value="Add to Played">
+        <input type="submit" class="btn btn-primary" value="Add to Played">
     </form>
+  </br>
+  </br>
 
-</div>
-
-</div>
-<% comments.forEach(function(comment) { %>
-    <div class="well">
-      <p>
-        <%= comment.comment %>
-      </br>
-        <strong>- <%= comment.user.name %>, <%= comment.userId %></strong> 
-        
-      </p>
-      <% if (currentUser && comment.userId === currentUser.id) { %>
-        <form method="GET" action="/games/comments/edit/<%= comment.id %>">
+  <h5>Comments</h5>
+  <% comments.forEach(function(comment) { %>
+    <div class="card">
+      
+        <p> 
+          <%= comment.comment %>
+        </br>
+           <strong>- <%= comment.user.name %></strong> 
           
-          <input type="submit" value="Edit">
-        </form>
-        <form method="POST" action="/games/comments/?_method=DELETE">
-          <input type="hidden" id="commentId" name="commentId" value="<%= comment.id %>">
-          <input type="hidden" id="gameId" name="gameId" value="<%= comment.gameId %>">
-          <input type="submit" value="Delete">
-        </form>
+        </p>
+      </div>
+      </br>
+        <% if (currentUser && comment.userId === currentUser.id) { %>
+          <div class="form-inline comments">
 
-      <% } else {%>
+            <form method="GET" action="/games/comments/edit/<%= comment.id %>">
+              
+              <input type="submit" class="comments btn btn-primary"value="Edit">
+            </form>
+            <form method="POST" action="/games/comments/?_method=DELETE">
+              <input type="hidden" id="commentId" name="commentId" value="<%= comment.id %>">
+              <input type="hidden" id="gameId" name="gameId" value="<%= comment.gameId %>">
+              <input type="submit" class="comments btn btn-primary" value="Delete">
+            </form>
+          </div>
+        </br>
+  
+        <% } else {%>
+          
         
-      <% } %>
-    </div>
-  <% }) %>
+        <% } %>
+    <% }) %>
+    <form action="/games/:id/comments" method="POST">
+       
+        
+        
+        <div class="form-group">
+          <label for="content">Add a comment</label></br>
+          <textarea type="text" class="form-control" id="content" name="content" required></textarea>
+        </div>
+        <input type="hidden" id="gameTitle" name="gameTitle" value="<%= game.name %>">
+        <input type="hidden" id="gameRawgId" name="gameRawgId" value="<%= game.id %>">
+        <input type="hidden" id="gameImage" name="gameImage" value="<%= game.background_image %>">
+        <input type="submit" class="btn btn-primary">
+      </form>
+    </br>
+    </br>
+    </br>
+</div>
 
 
-<form action="/games/:id/comments" method="POST">
-   
-    
-    
-    <div class="form-group">
-      <label for="content">Comment</label></br>
-      <textarea type="text" class="form-control" id="content" name="content" required></textarea>
-    </div>
-    <input type="hidden" id="gameTitle" name="gameTitle" value="<%= game.name %>">
-    <input type="hidden" id="gameRawgId" name="gameRawgId" value="<%= game.id %>">
-    <input type="hidden" id="gameImage" name="gameImage" value="<%= game.background_image %>">
-    <input type="submit" class="btn btn-primary">
-  </form>

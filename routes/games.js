@@ -192,10 +192,10 @@ router.post('/:id/comments', isLoggedIn, (req,res) => {
         userId: req.user.id,
         comment: req.body.content
       })
+      res.redirect(`/games/${req.body.gameRawgId}`)
     })
     
   })
-  res.redirect(`/games/${req.body.gameRawgId}`)
 })
 
 

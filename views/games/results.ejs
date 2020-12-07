@@ -1,7 +1,30 @@
-<% results.forEach(function(result) { %>
-    <div class="well">
-      <h3><a href="/games/<%= result.id %>"><%= result.name %></a></h3>
-      <p> <%= result.released %></p>
+
+  <h3 class="text-primary">Games Found</h3>
+  
+
+
+<div class="index">
+  <% results.forEach(function(result) { %>
+      <div class="card">
+        <a href="/games/<%= result.id %>">
+          <img src="<%= result.background_image %>" class="card-img-top" alt="<%= result.name %>">
+        </a>
+        <div class="card-body">
+  
+          <h5 class="card-title"><a href="/games/<%= result.id %>"><%= result.name %></a></h5>
+          <p class="card-text"> Released: <%= result.released %></p>
+          <form method="POST" action="/games/played">
       
+          
+            <input type="hidden" id="gameTitle" name="gameTitle" value="<%= result.name %>">
+            <input type="hidden" id="gameRawgId" name="gameRawgId" value="<%= result.id %>">
+            <input type="hidden" id="gameImage" name="gameImage" value="<%= result.background_image %>">
+            
+            <input type="submit" class="btn btn-primary" value="Add to Played">
+          </form>
+        </div>
+        
+        
+      </div>
+    <% }); %>
     </div>
-  <% }); %>
